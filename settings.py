@@ -5,17 +5,17 @@ MAX_VOCAB_SIZE = 2000000
 # Fixed length allowed for any sequence
 SEQ_LENGTH = 25
 # Dimension for the image embeddings and token embeddings
-EMBED_DIM = 512
+EMBED_DIM = 1024
 # Number of self-attention heads
 NUM_HEADS = 6
 # Per-layer units in the feed-forward network
 FF_DIM = 1024
 # Shuffle dataset dim on tf.data.Dataset
-SHUFFLE_DIM = 512
+SHUFFLE_DIM = 1024
 # Batch size
 BATCH_SIZE = 64
 # Numbers of training epochs
-EPOCHS = 14
+EPOCHS = 20
 
 # Reduce Dataset
 # If you want reduce number of train/valid images dataset, set 'REDUCE_DATASET=True'
@@ -41,6 +41,6 @@ valid_data_json_path = "COCO_dataset/captions_mapping_valid.json"
 text_data_json_path  = "COCO_dataset/text_data.json"
 
 # Save training files directory
-SAVE_DIR = "save_train_dir/"
+SAVE_DIR = "save_train_dir/EfficientNetB0_imagenet_model_2"
 
 
