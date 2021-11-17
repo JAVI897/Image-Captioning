@@ -16,6 +16,8 @@ SHUFFLE_DIM = 256
 BATCH_SIZE = 64
 # Numbers of training epochs
 EPOCHS = 20
+# CNN ['EfficientNet', 'VGG']
+CNN_TOP_MODEL = 'EfficientNet'
 
 # Reduce Dataset
 # If you want reduce number of train/valid images dataset, set 'REDUCE_DATASET=True'
@@ -42,5 +44,4 @@ text_data_json_path  = "COCO_dataset/text_data.json"
 
 # Save training files directory
 SAVE_DIR = "save_train_dir/EfficientNetB0_imagenet_model_2"
-
 
