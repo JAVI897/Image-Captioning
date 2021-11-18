@@ -5,7 +5,7 @@ MAX_VOCAB_SIZE = 2000000
 # Fixed length allowed for any sequence
 SEQ_LENGTH = 25
 # Dimension for the image embeddings and token embeddings
-EMBED_DIM = 1024
+EMBED_DIM = 512
 # Number of self-attention heads
 NUM_HEADS = 6
 # Per-layer units in the feed-forward network
@@ -17,7 +17,7 @@ BATCH_SIZE = 64
 # Numbers of training epochs
 EPOCHS = 20
 # CNN ['EfficientNet', 'VGG']
-CNN_TOP_MODEL = 'EfficientNet'
+CNN_TOP_MODEL = 'VGG'
 
 # Reduce Dataset
 # If you want reduce number of train/valid images dataset, set 'REDUCE_DATASET=True'
@@ -43,5 +43,4 @@ valid_data_json_path = "COCO_dataset/captions_mapping_valid.json"
 text_data_json_path  = "COCO_dataset/text_data.json"
 
 # Save training files directory
-SAVE_DIR = "save_train_dir/EfficientNetB0_imagenet_model_2/"
-
+SAVE_DIR = "save_train_dir/VGG16_imagenet_model_1/"
