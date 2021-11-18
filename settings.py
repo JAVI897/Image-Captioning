@@ -43,5 +43,5 @@ valid_data_json_path = "COCO_dataset/captions_mapping_valid.json"
 text_data_json_path  = "COCO_dataset/text_data.json"
 
 # Save training files directory
-SAVE_DIR = "save_train_dir/EfficientNetB0_imagenet_model_2"
+SAVE_DIR = "save_train_dir/EfficientNetB0_imagenet_model_2/"
 
