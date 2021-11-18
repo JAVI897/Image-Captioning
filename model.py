@@ -20,7 +20,7 @@ def get_cnn_model():
         # Freeze feature extractor layers
         base_model.trainable = False
         base_model_out = base_model.output
-        base_model_out = layers.Reshape((-1, 1280))(base_model_out)
+        base_model_out = layers.Reshape((-1, 512))(base_model_out)
         cnn_model = keras.models.Model(base_model.input, base_model_out)
         return cnn_model
         
