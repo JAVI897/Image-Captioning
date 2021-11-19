@@ -16,7 +16,7 @@ SHUFFLE_DIM = 256
 BATCH_SIZE = 64
 # Numbers of training epochs
 EPOCHS = 20
-# CNN ['EfficientNet', 'VGG']
+# CNN ['EfficientNet', 'VGG', 'ResNet']
 CNN_TOP_MODEL = 'VGG'
 
 # Reduce Dataset
