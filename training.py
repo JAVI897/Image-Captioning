@@ -99,7 +99,8 @@ config_train = {"IMAGE_SIZE": IMAGE_SIZE,
                 "FF_DIM" : FF_DIM,
                 "BATCH_SIZE" : BATCH_SIZE,
                 "EPOCHS" : EPOCHS,
-                "VOCAB_SIZE" : VOCAB_SIZE}
+                "VOCAB_SIZE" : VOCAB_SIZE,
+                "CNN_TOP_MODEL" : CNN_TOP_MODEL}
 
 json.dump(config_train, open(SAVE_DIR + 'config_train.json', 'w'))
 

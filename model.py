@@ -90,7 +90,7 @@ class TransformerDecoderBlock(layers.Layer):
         self.layernorm_3 = layers.LayerNormalization()
 
         self.embedding = PositionalEmbedding(
-            embed_dim=EMBED_DIM, sequence_length=SEQ_LENGTH, vocab_size=self.vocab_size
+            embed_dim=embed_dim, sequence_length=SEQ_LENGTH, vocab_size=self.vocab_size
         )
         self.out = layers.Dense(self.vocab_size)
         self.dropout_1 = layers.Dropout(0.1)
