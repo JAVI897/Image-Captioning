@@ -3,6 +3,8 @@ from tensorflow.keras import layers
 from tensorflow import keras
 from tensorflow.keras.applications import efficientnet, vgg16, ResNet50
 from settings import *
+import clip
+import torch
 
 def get_cnn_model():
     if CNN_TOP_MODEL == 'EfficientNet':
@@ -33,6 +35,15 @@ def get_cnn_model():
         base_model_out = layers.Reshape((-1, 2048))(base_model_out)
         cnn_model = keras.models.Model(base_model.input, base_model_out)
         return cnn_model
+    if CNN_TOP_MODEL == 'CLIP':
+        return None
+
+def batch_from_clip(batch_img):
+    device = torch.device('cuda:0')
+    clip_model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
+    image = preprocess(Image.fromarray(image)).unsqueeze(0).to(device)
+    with torch.no_grad():
+        prefix = clip_model.encode_image(image).cpu()
 
 class TransformerEncoderBlock(layers.Layer):
     def __init__(self, embed_dim, dense_dim, num_heads, **kwargs):
@@ -170,7 +181,8 @@ class ImageCaptioningModel(keras.Model):
 
 
     def call(self, inputs):
-        x = self.cnn_model(inputs[0])
+        if CNN_TOP_MODEL != 'CLIP':
+            x = self.cnn_model(inputs[0])
         x = self.encoder(x, False)
         x = self.decoder(inputs[2],x,training=inputs[1],mask=None)
         return x
@@ -194,7 +206,10 @@ class ImageCaptioningModel(keras.Model):
         batch_acc = 0
 
         # 1. Get image embeddings
-        img_embed = self.cnn_model(batch_img)
+        if CNN_TOP_MODEL != 'CLIP':
+            img_embed = self.cnn_model(batch_img)
+        else:
+            img_embed = batch_from_clip(batch_img)
 
         # 2. Pass each of the five captions one by one to the decoder
         # along with the encoder outputs and compute the loss as well as accuracy
@@ -250,7 +265,11 @@ class ImageCaptioningModel(keras.Model):
         batch_acc = 0
 
         # 1. Get image embeddings
-        img_embed = self.cnn_model(batch_img)
+        if CNN_TOP_MODEL != 'CLIP':
+            img_embed = self.cnn_model(batch_img)
+            print(img_embed)
+        else:
+            img_embed = batch_from_clip(batch_img)
 
         # 2. Pass each of the five captions one by one to the decoder
         # along with the encoder outputs and compute the loss as well as accuracy
