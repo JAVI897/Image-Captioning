@@ -23,7 +23,7 @@ model.load_weights(get_model_weights_path)
 
 with open(get_model_config_path) as json_file:
     model_config = json.load(json_file)
-    
+
 # Generate new captions from txt file
 
 
@@ -35,7 +35,8 @@ with open('COCO_dataset/karpathy_validation_captions.json') as json_file:
 if not os.path.isfile(system_caption_file):
     captions = []
     predictions = []
-    for test_img in lines:
+    file = open('karpathy_valid_images.txt','r')
+    for test_img in file.readlines():
         file_path, number_instance = test_img.split()
         _, name_img = file_path.split('/')
         name_img = 'COCO_dataset/val2014/'+ name_img
