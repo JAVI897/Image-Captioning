@@ -1,6 +1,6 @@
-#from utility import  get_inference_model, generate_caption
+from utility import  get_inference_model, generate_caption
 import json
-#import tensorflow as tf
+import tensorflow as tf
 from settings_inference import *
 from settings import *
 import pandas as pd
