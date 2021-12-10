@@ -35,7 +35,7 @@ with open('COCO_dataset/karpathy_validation_captions.json') as json_file:
 if not os.path.isfile(system_caption_file):
     captions = []
     predictions = []
-    file = open('karpathy_valid_images.txt','r')
+    file = open('COCO_dataset/karpathy_valid_images.txt','r')
     for test_img in file.readlines():
         file_path, number_instance = test_img.split()
         _, name_img = file_path.split('/')
