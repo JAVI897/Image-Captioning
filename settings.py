@@ -17,7 +17,7 @@ BATCH_SIZE = 64
 # Numbers of training epochs
 EPOCHS = 20
 # CNN ['EfficientNet', 'VGG', 'ResNet']
-CNN_TOP_MODEL = 'VGG'
+CNN_TOP_MODEL = 'EfficientNet'
 
 # Reduce Dataset
 # If you want reduce number of train/valid images dataset, set 'REDUCE_DATASET=True'
