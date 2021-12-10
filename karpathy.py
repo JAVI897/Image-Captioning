@@ -21,6 +21,9 @@ model = get_inference_model(get_model_config_path)
 # Load model weights
 model.load_weights(get_model_weights_path)
 
+with open(get_model_config_path) as json_file:
+    model_config = json.load(json_file)
+    
 # Generate new captions from txt file
 
 
