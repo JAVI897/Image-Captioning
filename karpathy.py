@@ -8,7 +8,7 @@ from pycocotools.coco import COCO
 from pycocoevalcap.eval import COCOEvalCap
 import os
 reference_caption_file = 'COCO_dataset/annotations/captions_val2014.json'
-system_caption_file = 'system_caption_file_{}_{}.json'.format(model_config['CNN_TOP_MODEL'], model_config['EMBED_DIM'])
+system_caption_file = 'system_caption_file_{}_{}.json'.format(CNN_TOP_MODEL, EMBED_DIM)
 
 
 # Get tokenizer layer from disk
@@ -46,7 +46,7 @@ if not os.path.isfile(system_caption_file):
         predictions.append([number_instance, caption_img])
 
     df = pd.DataFrame(captions, columns = ['caption 1', 'caption 2', 'caption 3', 'caption 4', 'caption 5', 'prediction'])
-    df.to_csv('karpathy_test_predictions_{}_{}.csv'.format(model_config['CNN_TOP_MODEL'], model_config['EMBED_DIM']))
+    df.to_csv('karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
 
     coco_res_df = pd.DataFrame(predictions, columns = ['image_id', 'caption'])
     print('\nWriting predictions to file "{}".'.format(system_caption_file))
