@@ -7,7 +7,8 @@ import pandas as pd
 from pycocotools.coco import COCO
 from pycocoevalcap.eval import COCOEvalCap
 import os
-reference_caption_file = 'COCO_dataset/annotations/captions_val2014.json'
+from nltk.translate.bleu_score import sentence_bleu as bleu_score
+
 system_caption_file = 'system_caption_file_{}_{}.json'.format(CNN_TOP_MODEL, EMBED_DIM)
 
 
@@ -56,15 +57,37 @@ if not os.path.isfile(system_caption_file):
     print('\nWriting predictions to file "{}".'.format(system_caption_file))
     coco_res_df.to_json(system_caption_file, orient='records')
 
+df_results = pd.read_csv('karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
 
-coco = COCO(reference_caption_file)
-coco_system_captions = coco.loadRes(system_caption_file)
-coco_eval = COCOEvalCap(coco, coco_system_captions)
-coco_eval.params['image_id'] = coco_system_captions.getImgIds()
+N = 0
+BLEU_1 = 0
+BLEU_2 = 0
+BLEU_3 = 0
+BLEU_4 = 0
+for index, row in df_results.iterrows():
+    caption1, caption2, caption3, caption4, caption5, prediction = row['caption 1'], row['caption 2'], row['caption 3'], row['caption 4'], row['caption 5'], row['prediction']
+    references = [caption1.split(), caption2.split(), caption3.split(), caption4.split(), caption5.split()]
+    candidate = prediction.split()
 
-coco_eval.evaluate()
+    bleu_1 = bleu_score(references, candidate, weights=(1, 0, 0, 0))
+    bleu_2 = bleu_score(references, candidate, weights=(0, 1, 0, 0))
+    bleu_3 = bleu_score(references, candidate, weights=(0, 0, 1, 0))
+    bleu_4 = bleu_score(references, candidate, weights=(0, 0, 0, 1))
 
-print('\nScores:')
-print('=======')
-for metric, score in coco_eval.eval.items():
-    print('{}: {:.3f}'.format(metric, score))
+    N += 1
+    BLEU_1 += bleu_1
+    BLEU_2 += bleu_2
+    BLEU_3 += bleu_3
+    BLEU_4 += bleu_4
+
+BLEU_1 = BLEU_1/N
+BLEU_2 = BLEU_2/N
+BLEU_3 = BLEU_3/N
+BLEU_4 = BLEU_4/N
+
+df_scores = pd.DataFrame({'bleu_1': BLEU_1, 'bleu_2': BLEU_2, 
+                          'bleu_3': BLEU_3, 'bleu_4': BLEU_4 })
+
+df_scores.to_csv('scores_karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
+
+print('[INFO] Scores. Bleu 1 = {:.4} Bleu 2 = {:.4} Bleu 3 = {:.4} Bleu 4 = {:.4}'.format(BLEU_1, BLEU_2, BLEU_3, BLEU_4))
