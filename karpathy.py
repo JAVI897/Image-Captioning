@@ -99,7 +99,7 @@ for index, row in df_results.iterrows():
     # METEOR
     meteor = 0
     for c, r in zip([candidate]*5, [caption1, caption2, caption3, caption4, caption5]):
-        meteor += meteor_score(c, r)
+        meteor += meteor_score([c], [r])
     meteor = meteor/5
     METEOR += meteor
 
