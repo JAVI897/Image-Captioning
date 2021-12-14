@@ -9,6 +9,7 @@ from pycocoevalcap.eval import COCOEvalCap
 import os
 from nltk.translate.bleu_score import sentence_bleu as bleu_score
 from nltk import word_tokenize
+import nltk
 nltk.download('punkt')
 
 system_caption_file = 'system_caption_file_{}_{}.json'.format(CNN_TOP_MODEL, EMBED_DIM)
