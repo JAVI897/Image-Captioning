@@ -66,7 +66,10 @@ BLEU_3 = 0
 BLEU_4 = 0
 for index, row in df_results.iterrows():
     caption1, caption2, caption3, caption4, caption5, prediction = row['caption 1'], row['caption 2'], row['caption 3'], row['caption 4'], row['caption 5'], row['prediction']
-    references = [caption1.split(), caption2.split(), caption3.split(), caption4.split(), caption5.split()]
+    references = [caption1.replace('.', '').split(), caption2.replace('.', '').split(), 
+                  caption3.replace('.', '').split(), caption4.replace('.', '').split(), 
+                  caption5.replace('.', '').split()]
+                  
     candidate = prediction.split()
 
     bleu_1 = bleu_score(references, candidate, weights=(1, 0, 0, 0))
@@ -85,8 +88,8 @@ BLEU_2 = BLEU_2/N
 BLEU_3 = BLEU_3/N
 BLEU_4 = BLEU_4/N
 
-df_scores = pd.DataFrame({'bleu_1': BLEU_1, 'bleu_2': BLEU_2, 
-                          'bleu_3': BLEU_3, 'bleu_4': BLEU_4 })
+df_scores = pd.DataFrame({'bleu_1': [BLEU_1], 'bleu_2': [BLEU_2], 
+                          'bleu_3': [BLEU_3], 'bleu_4': [BLEU_4] })
 
 df_scores.to_csv('scores_karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
 
