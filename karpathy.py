@@ -98,8 +98,8 @@ for index, row in df_results.iterrows():
 
     # METEOR
     meteor = 0
-    for c, r in zip([prediction]*5, [caption1, caption2, caption3, caption4, caption5]):
-        meteor += single_meteor_score(c, r)
+    for h, r in zip([candidate]*5, references):
+        meteor += single_meteor_score(r, h)
     meteor = meteor/5
     METEOR += meteor
 
