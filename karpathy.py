@@ -107,7 +107,7 @@ for index, row in df_results.iterrows():
 
     # ROUGE-L
     rouge_l = 0
-    for h, r in zip([candidate]*5, references):
+    for h, r in zip([prediction]*5, [caption1, caption2, caption3, caption4, caption5]):
         scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
         score = scorer.score(r, h)['rougeL']
         score = score.fmeasure
