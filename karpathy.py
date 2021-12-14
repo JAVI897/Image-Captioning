@@ -8,6 +8,7 @@ from pycocotools.coco import COCO
 from pycocoevalcap.eval import COCOEvalCap
 import os
 from nltk.translate.bleu_score import sentence_bleu as bleu_score
+from nltk import word_tokenize
 
 system_caption_file = 'system_caption_file_{}_{}.json'.format(CNN_TOP_MODEL, EMBED_DIM)
 
@@ -64,32 +65,43 @@ BLEU_1 = 0
 BLEU_2 = 0
 BLEU_3 = 0
 BLEU_4 = 0
+BLEU_comb = 0
 for index, row in df_results.iterrows():
     caption1, caption2, caption3, caption4, caption5, prediction = row['caption 1'], row['caption 2'], row['caption 3'], row['caption 4'], row['caption 5'], row['prediction']
-    references = [caption1.replace('.', '').split(), caption2.replace('.', '').split(), 
-                  caption3.replace('.', '').split(), caption4.replace('.', '').split(), 
-                  caption5.replace('.', '').split()]
-                  
+    #references = [caption1.replace('.', '').split(), caption2.replace('.', '').split(), 
+    #              caption3.replace('.', '').split(), caption4.replace('.', '').split(), 
+    #              caption5.replace('.', '').split()]
+    references = [word_tokenize(caption1), word_tokenize(caption2), word_tokenize(caption3), 
+                  word_tokenize(caption4), word_tokenize(caption5) ]
+
     candidate = prediction.split()
 
     bleu_1 = bleu_score(references, candidate, weights=(1, 0, 0, 0))
     bleu_2 = bleu_score(references, candidate, weights=(0, 1, 0, 0))
     bleu_3 = bleu_score(references, candidate, weights=(0, 0, 1, 0))
     bleu_4 = bleu_score(references, candidate, weights=(0, 0, 0, 1))
+    
+    bleu_combined = (1/4)* (bleu_1 + bleu_2 + bleu_3 + bleu_4)
+    bleu = bleu_score(references, candidate, weights=(1/4, 1/4, 1/4, 1/4))
+
+    assert abs(bleu_combined - bleu) < 1e-2, 'incorrect calculation'
 
     N += 1
     BLEU_1 += bleu_1
     BLEU_2 += bleu_2
     BLEU_3 += bleu_3
     BLEU_4 += bleu_4
+    BLEU_comb += bleu
 
 BLEU_1 = BLEU_1/N
 BLEU_2 = BLEU_2/N
 BLEU_3 = BLEU_3/N
 BLEU_4 = BLEU_4/N
+BLEU_comb = BLEU_comb/N
 
 df_scores = pd.DataFrame({'bleu_1': [BLEU_1], 'bleu_2': [BLEU_2], 
-                          'bleu_3': [BLEU_3], 'bleu_4': [BLEU_4] })
+                          'bleu_3': [BLEU_3], 'bleu_4': [BLEU_4],
+                          'BLEU_comb' : [BLEU_comb] })
 
 df_scores.to_csv('scores_karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
 
