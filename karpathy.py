@@ -76,7 +76,7 @@ for index, row in df_results.iterrows():
     references = [word_tokenize(caption1), word_tokenize(caption2), word_tokenize(caption3), 
                   word_tokenize(caption4), word_tokenize(caption5) ]
 
-    candidate = prediction.split()
+    candidate = word_tokenize(prediction)
 
     bleu_1 = bleu_score(references, candidate, weights=(1, 0, 0, 0))
     bleu_2 = bleu_score(references, candidate, weights=(0, 1, 0, 0))
