@@ -82,11 +82,7 @@ for index, row in df_results.iterrows():
     bleu_2 = bleu_score(references, candidate, weights=(0, 1, 0, 0))
     bleu_3 = bleu_score(references, candidate, weights=(0, 0, 1, 0))
     bleu_4 = bleu_score(references, candidate, weights=(0, 0, 0, 1))
-    
-    bleu_combined = (1/4)* (bleu_1 + bleu_2 + bleu_3 + bleu_4)
     bleu = bleu_score(references, candidate, weights=(1/4, 1/4, 1/4, 1/4))
-
-    assert abs(bleu_combined - bleu) < 1e-2, 'incorrect calculation'
 
     N += 1
     BLEU_1 += bleu_1
