@@ -65,63 +65,64 @@ if not os.path.isfile(system_caption_file):
 
 df_results = pd.read_csv('karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
 
-N = 0
-BLEU_1 = 0
-BLEU_2 = 0
-BLEU_3 = 0
-BLEU_4 = 0
-BLEU_comb = 0
-METEOR = 0
-ROUGE_L = 0
+def compute_metrics(df_results):
+    N = 0
+    BLEU_1 = 0
+    BLEU_2 = 0
+    BLEU_3 = 0
+    BLEU_4 = 0
+    BLEU_comb = 0
+    METEOR = 0
+    ROUGE_L = 0
 
-for index, row in df_results.iterrows():
-    caption1, caption2, caption3, caption4, caption5, prediction = row['caption 1'], row['caption 2'], row['caption 3'], row['caption 4'], row['caption 5'], row['prediction']
-    #references = [caption1.replace('.', '').split(), caption2.replace('.', '').split(), 
-    #              caption3.replace('.', '').split(), caption4.replace('.', '').split(), 
-    #              caption5.replace('.', '').split()]
-    references = [word_tokenize(caption1), word_tokenize(caption2), word_tokenize(caption3), 
-                  word_tokenize(caption4), word_tokenize(caption5) ]
+    for index, row in df_results.iterrows():
+        caption1, caption2, caption3, caption4, caption5, prediction = row['caption 1'], row['caption 2'], row['caption 3'], row['caption 4'], row['caption 5'], row['prediction']
+        references = [word_tokenize(caption1), word_tokenize(caption2), word_tokenize(caption3), 
+                      word_tokenize(caption4), word_tokenize(caption5) ]
 
-    candidate = word_tokenize(prediction)
+        candidate = word_tokenize(prediction)
 
-    # BLEU
-    bleu_1 = bleu_score(references, candidate, weights=(1, 0, 0, 0))
-    bleu_2 = bleu_score(references, candidate, weights=(0, 1, 0, 0))
-    bleu_3 = bleu_score(references, candidate, weights=(0, 0, 1, 0))
-    bleu_4 = bleu_score(references, candidate, weights=(0, 0, 0, 1))
-    bleu = bleu_score(references, candidate, weights=(1/4, 1/4, 1/4, 1/4))
+        # BLEU
+        bleu_1 = bleu_score(references, candidate, weights=(1, 0, 0, 0))
+        bleu_2 = bleu_score(references, candidate, weights=(0, 1, 0, 0))
+        bleu_3 = bleu_score(references, candidate, weights=(0, 0, 1, 0))
+        bleu_4 = bleu_score(references, candidate, weights=(0, 0, 0, 1))
+        bleu = bleu_score(references, candidate, weights=(1/4, 1/4, 1/4, 1/4))
 
-    N += 1
-    BLEU_1 += bleu_1
-    BLEU_2 += bleu_2
-    BLEU_3 += bleu_3
-    BLEU_4 += bleu_4
-    BLEU_comb += bleu
+        N += 1
+        BLEU_1 += bleu_1
+        BLEU_2 += bleu_2
+        BLEU_3 += bleu_3
+        BLEU_4 += bleu_4
+        BLEU_comb += bleu
 
-    # METEOR
-    meteor = 0
-    for h, r in zip([candidate]*5, references):
-        meteor += single_meteor_score(r, h)
-    meteor = meteor/5
-    METEOR += meteor
+        # METEOR
+        meteor = 0
+        for h, r in zip([candidate]*5, references):
+            meteor += single_meteor_score(r, h)
+        meteor = meteor/5
+        METEOR += meteor
 
-    # ROUGE-L
-    rouge_l = 0
-    for h, r in zip([prediction]*5, [caption1, caption2, caption3, caption4, caption5]):
-        scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
-        score = scorer.score(r, h)['rougeL']
-        score = score.fmeasure
-        rouge_l += score
-    rouge_l = rouge_l/5
-    ROUGE_L += rouge_l
+        # ROUGE-L
+        rouge_l = 0
+        for h, r in zip([prediction]*5, [caption1, caption2, caption3, caption4, caption5]):
+            scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
+            score = scorer.score(r, h)['rougeL']
+            score = score.fmeasure
+            rouge_l += score
+        rouge_l = rouge_l/5
+        ROUGE_L += rouge_l
 
-BLEU_1 = BLEU_1/N
-BLEU_2 = BLEU_2/N
-BLEU_3 = BLEU_3/N
-BLEU_4 = BLEU_4/N
-BLEU_comb = BLEU_comb/N
-METEOR = METEOR/N
-ROUGE_L = ROUGE_L/N
+    BLEU_1 = BLEU_1/N
+    BLEU_2 = BLEU_2/N
+    BLEU_3 = BLEU_3/N
+    BLEU_4 = BLEU_4/N
+    BLEU_comb = BLEU_comb/N
+    METEOR = METEOR/N
+    ROUGE_L = ROUGE_L/N
+    return BLEU_1, BLEU_2, BLEU_3, BLEU_4, BLEU_comb, METEOR, ROUGE_L
+
+BLEU_1, BLEU_2, BLEU_3, BLEU_4, BLEU_comb, METEOR, ROUGE_L = compute_metrics(df_results)
 
 df_scores = pd.DataFrame({'bleu_1': [BLEU_1], 'bleu_2': [BLEU_2], 
                           'bleu_3': [BLEU_3], 'bleu_4': [BLEU_4],
