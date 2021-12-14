@@ -125,7 +125,8 @@ ROUGE_L = ROUGE_L/N
 
 df_scores = pd.DataFrame({'bleu_1': [BLEU_1], 'bleu_2': [BLEU_2], 
                           'bleu_3': [BLEU_3], 'bleu_4': [BLEU_4],
-                          'BLEU_comb' : [BLEU_comb], 'METEOR' : [METEOR] })
+                          'BLEU_comb' : [BLEU_comb], 'METEOR' : [METEOR],
+                          'ROUGE_L' : [ROUGE_L] })
 
 df_scores.to_csv('scores_karpathy_test_predictions_{}_{}.csv'.format(CNN_TOP_MODEL, EMBED_DIM))
 
