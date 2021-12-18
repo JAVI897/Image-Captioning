@@ -4,8 +4,6 @@ import tensorflow as tf
 from settings_inference import *
 from settings import *
 import pandas as pd
-from pycocotools.coco import COCO
-from pycocoevalcap.eval import COCOEvalCap
 import os
 from nltk.translate.bleu_score import sentence_bleu as bleu_score
 from nltk.translate.meteor_score import single_meteor_score
