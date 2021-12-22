@@ -100,7 +100,7 @@ def compute_metrics(df_results):
         #for h, r in zip([candidate]*5, references):
         #    meteor += single_meteor_score(r, h)
         #meteor = meteor/5
-        meteor = meteor_score(references, [candidate])
+        meteor = meteor_score.meteor_score(references, [candidate])
         METEOR += meteor
 
         # ROUGE-L
