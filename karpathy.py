@@ -1,6 +1,8 @@
 import clip
 import statistics as stats
 import torch
+import skimage.io as io
+import PIL.Image
 
 from utility import  get_inference_model, generate_caption
 import json
