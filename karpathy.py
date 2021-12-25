@@ -17,6 +17,7 @@ import nltk
 from rouge_score import rouge_scorer
 nltk.download('punkt')
 nltk.download('wordnet')
+D = torch.device
 
 system_caption_file = 'system_caption_file_{}_{}.json'.format(CNN_TOP_MODEL, EMBED_DIM)
 
@@ -184,7 +185,6 @@ def get_device(device_id: int) -> D:
 
 BLEU_1, BLEU_2, BLEU_3, BLEU_4, BLEU_comb, METEOR, ROUGE_L = compute_metrics(df_results)
 
-D = torch.device
 CPU = torch.device('cpu')
 CUDA = get_device
 device = CUDA(0) if is_gpu else "cpu"
