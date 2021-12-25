@@ -185,6 +185,7 @@ def get_device(device_id: int) -> D:
 
 BLEU_1, BLEU_2, BLEU_3, BLEU_4, BLEU_comb, METEOR, ROUGE_L = compute_metrics(df_results)
 
+is_gpu = True
 CPU = torch.device('cpu')
 CUDA = get_device
 device = CUDA(0) if is_gpu else "cpu"
