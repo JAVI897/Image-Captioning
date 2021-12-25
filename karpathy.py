@@ -3,7 +3,7 @@ import statistics as stats
 import torch
 import skimage.io as io
 import PIL.Image
-
+import numpy as np
 from utility import  get_inference_model, generate_caption
 import json
 import tensorflow as tf
