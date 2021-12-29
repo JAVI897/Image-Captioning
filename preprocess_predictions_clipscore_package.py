@@ -9,7 +9,7 @@ con = parser.parse_args()
 
 def configuration():
 	output_predictions = 'karpathy_test_predictions_{}_512.csv'.format(con.network)
-	output_candidates = 'candidates_karpathy_test_predictions_{}_512.csv'.format(con.network)
+	output_candidates = 'candidates_karpathy_test_predictions_{}_512.json'.format(con.network)
 	config ={
 			 'output_predictions': output_predictions,
 			 'output_candidates':output_candidates
